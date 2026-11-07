@@ -1,6 +1,6 @@
 # 🗺️ 湘粤赣桂旅游与徒步地图
 
-**一个把「去哪玩」和「这条路怎么走」做成可交互地图的 Web 应用。**
+**一个把「去哪玩」和「这条路怎么走」做成可交互地图的 Web 应用（Python · Streamlit 独立版）。**
 
 覆盖广东、湖南、江西、广西桂林：155 个景点 · 34 条徒步路线 · 15,330 个轨迹坐标点。
 
@@ -18,47 +18,33 @@
 
 ---
 
-## 🆕 新版前端（Vue 3）— 2026-11 重构
+## 📸 界面一览
 
-Streamlit 版在反代环境下会出现静态资源加载失败（图表、下拉框显示为红块），因此把前端重做成 **Vue 3 + Vite 单页应用**，不依赖 Streamlit 运行时，直接托管在 GitHub Pages。
+四张都是本应用的真实运行截图（1440×1000，未修饰）。
 
-> ### ▶ [**新版在线体验：a1864-ctrl.github.io/south-china-hiking-map**](https://a1864-ctrl.github.io/south-china-hiking-map/)
->
-> 纯静态、秒开，手机浏览器也能用。源码在 [`web/`](web/)，部署产物在 [`docs/`](docs/)。
+| 首页：三个问题 + 数据规模 | 景点搜索：155 个景点，列表与地图联动 |
+|---|---|
+| ![首页](screenshots/home.jpg) | ![景点搜索](screenshots/spots.jpg) |
 
-**和旧版比，改了什么**
+| 徒步路线：地图 + 途经点 + 高程剖面 | 城市热度榜：46 城综合热度 Top 15 |
+|---|---|
+| ![徒步路线](screenshots/routes.jpg) | ![城市热度榜](screenshots/heat.jpg) |
 
-| 项目 | 旧版（Streamlit） | 新版（Vue 3） |
+---
+
+## 🧭 同一片山野的另一个项目
+
+另有一个 **Vue 3 + Vite** 的独立实现。两者**代码独立、数据独立、互不依赖**——改其中一个不会影响另一个：
+
+| | **本项目**（Python / Streamlit） | 另一个项目（Vue 3） |
 |---|---|---|
-| 布局 | 左侧 Sidebar 切页 | 顶部导航切换，内容区更宽 |
-| 地图缩放 | 整页刷新、需点按钮 | **滚轮直接缩放**，双击放大，可切标准/卫星 |
-| 徒步路线 | 34 条（含广西、江西） | **51 条**：湖南 23 + 广东 22 + 全国热门 6 |
-| 路线详情 | 途经点 + 高程图 | 途经点**间距** + **分段路书** + 交通接驳 + 补给撤离 + 装备清单 + 风险提示 |
-| 景点详情 | 门票 / 时长 / 推荐理由 | 增加**路书弹层**：打卡机位、推荐走法、怎么去、当地美食 |
-| 数据一致性 | 轨迹为示意线 | 轨迹按真实关键点拟合，长度与标注里程对齐，可导出 GPX |
+| 在线地址 | [south-china-hiking-map.streamlit.app](https://south-china-hiking-map.streamlit.app) | [south-china-hiking.app.workbuddy.host](https://south-china-hiking.app.workbuddy.host/?sharecode=NXC6GS3IF3) |
+| 数据 | 155 景点 · 34 路线 | 76 景点 · 53 路线 |
+| 侧重 | 数据流水线：OSM 路网规划 + SRTM 高程 + GPX 解析 | 静态站点：云账号、社区、找搭子、装备库、实时天气 |
+| 仓库 | 本仓库 | [south-china-hiking-map](https://github.com/A1864-ctrl/south-china-hiking-map) |
 
-**页面截图**
+两个项目面对同一类问题（去哪玩、路怎么走），但技术路线不同：本项目重在**把公开地理数据加工成可用轨迹**，另一个重在**多人协作与内容运营**。
 
-| 首页 | 景点搜索 |
-|---|---|
-| ![首页](docs/screenshots/home.png) | ![景点搜索](docs/screenshots/spots.png) |
-
-| 徒步轨迹 + 路书 | 交通接驳 / 补给 / 装备 |
-|---|---|
-| ![徒步轨迹](docs/screenshots/routes.png) | ![路书](docs/screenshots/roadbook.png) |
-
-![城市热度](docs/screenshots/heat.png)
-
-**本地运行新前端**
-
-```bash
-cd web
-npm install
-npm run dev        # http://127.0.0.1:5178
-npm run build      # 产物复制到 ../docs 即可发布
-```
-
-细节见 [`web/README.md`](web/README.md)。
 
 ---
 
@@ -244,7 +230,7 @@ Windows 上可直接双击 `start_local.bat`（用项目自带 `venv` 启动，�
 ## 部署上线
 
 - **免费**：Streamlit Community Cloud → `share.streamlit.io` → Create app →
-  选本仓库 / 分支 `master` / 主文件 `Home.py`，Advanced settings 里 Python 版本选 `3.12`
+  选本仓库 / 分支 `main` / 主文件 `Home.py`，Advanced settings 里 Python 版本选 `3.12`
 - **自建**：`docker build -t hiking-map . && docker run -d -p 8501:8501 --restart unless-stopped hiking-map`
 
 完整步骤、验收清单、报错对照见 [部署手册](部署手册.md)。
